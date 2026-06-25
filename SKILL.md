@@ -1,12 +1,12 @@
 ---
-version: 1.0.0
+version: 1.0.1
 name: QR Code Generator
 description: 生成和解析二维码。支持 URL / vCard / WIFI / 纯文本四种模式，可自定义颜色、嵌入 Logo。解析需安装 opencv-python。
 ---
 
 # QR Code Generator
 
-生成和解析二维码，支持 URL / vCard / WIFI 三种模式，可自定义颜色、嵌入 Logo。
+生成和解析二维码，支持 URL / vCard / WIFI / 纯文本四种模式，可自定义颜色、嵌入 Logo。
 
 ## 触发场景
 
@@ -33,8 +33,10 @@ python3 scripts/qr_code.py wifi -s WiFi名称 -p 密码 -o wifi.png
 python3 scripts/qr_code.py vcard -n 姓名 -t 电话 -e 邮箱 -o card.png
 
 # 解析二维码
-python3 scripts/qr_code.py decode 图片路径
+python3 scripts/qr_code.py text "任意文本" -o text.png
 ```
+
+### 解析二维码
 
 ## 参数说明
 
