@@ -11,6 +11,19 @@ import os
 import argparse
 import json
 
+def generate_text(data, output, fg="black", bg="white", logo=None, logo_size=0.25):
+    """生成纯文本二维码"""
+    import qrcode
+    qr = qrcode.QRCode(version=None, error_correction=qrcode.constants.ERROR_CORRECT_H if logo else qrcode.constants.ERROR_CORRECT_M,
+                       box_size=10, border=4)
+    qr.add_data(data)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color=fg, back_color=bg).convert("RGBA")
+    if logo:
+        img = add_logo(img, logo, logo_size)
+    img.convert("RGB").save(output)
+    print(f"✅ 文本二维码已保存: {output}")
+
 def generate_url(data, output, fg="black", bg="white", logo=None, logo_size=0.25, quiet_zone=True):
     """生成 URL 二维码"""
     import qrcode
@@ -158,13 +171,24 @@ def main():
     g_wifi.add_argument("--logo", help="Logo 图片路径")
     g_wifi.add_argument("--logo-size", type=float, default=0.25, help="Logo 大小比例")
 
+    # 生成纯文本
+    g_txt = sub.add_parser("text", help="生成纯文本二维码")
+    g_txt.add_argument("data", help="任意文本内容")
+    g_txt.add_argument("-o", "--output", default="qrcode_text.png", help="输出文件")
+    g_txt.add_argument("--fg", default="black", help="前景色")
+    g_txt.add_argument("--bg", default="white", help="背景色")
+    g_txt.add_argument("--logo", help="Logo 图片路径")
+    g_txt.add_argument("--logo-size", type=float, default=0.25, help="Logo 大小比例 (0.1-0.3)")
+
     # 解析
     g_dec = sub.add_parser("decode", help="解析二维码图片")
     g_dec.add_argument("image", help="二维码图片路径")
 
     args = parser.parse_args()
 
-    if args.cmd == "url":
+    if args.cmd == "text":
+        generate_text(args.data, args.output, args.fg, args.bg, args.logo, args.logo_size)
+    elif args.cmd == "url":
         generate_url(args.data, args.output, args.fg, args.bg, args.logo, args.logo_size, not args.no_quiet_zone)
     elif args.cmd == "vcard":
         vcard = f"BEGIN:VCARD\nVERSION:3.0\nFN:{args.name}\n"
