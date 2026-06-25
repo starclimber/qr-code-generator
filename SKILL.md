@@ -1,5 +1,5 @@
 ---
-version: 1.0.3
+version: 1.0.4
 name: QR Code Generator
 description: 生成和解析二维码。支持 URL / vCard / WIFI / 纯文本四种模式，可自定义颜色、嵌入 Logo。解析需安装 opencv-python。
 ---
@@ -47,6 +47,10 @@ python3 scripts/qr_code.py text "你好" -o text.png --fg black --bg white
 ```
 
 ### 解析二维码
+
+```bash
+python3 scripts/qr_code.py decode 图片路径
+```
 
 ## 参数说明
 
